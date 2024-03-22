@@ -1,10 +1,6 @@
-import { compare } from "bcrypt-ts";
-
-import type { UsersRepository } from "@/repositories/users-repository";
-import type {} from "@prisma/client";
+import type { CheckIn } from "@prisma/client";
 
 import type { CheckInsRepository } from "@/repositories/check-ins-repository";
-import { InvalidCredentialsError } from "@/use-cases/errors/invalid-credentials-error";
 
 interface CheckInUseCaseRequest {
 	userId: string;
@@ -22,6 +18,11 @@ export class CheckInUseCase {
 		gymId,
 		userId,
 	}: CheckInUseCaseRequest): Promise<CheckInUseCaseResponse> {
-		const checkIn = await this.checkInsRepository.create({})
+		const checkIn = await this.checkInsRepository.create({
+			gym_id: gymId,
+			user_id: userId,
+		});
+
+		return { checkIn };
 	}
 }
