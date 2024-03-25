@@ -1,6 +1,6 @@
 import { InMemoryUsersRepository } from "@/repositories/in-memory/in-memory-users-repository";
 import type { UsersRepository } from "@/repositories/users-repository";
-import { UserAlreadyExistsError } from "@/use-cases/errors/user-already-exists-error";
+import { ResourceAlreadyExistsError } from "@/use-cases/errors/resource-already-exists-error";
 import { RegisterUseCase } from "@/use-cases/register";
 import { compare } from "bcrypt-ts";
 import { beforeEach, describe, expect, it } from "vitest";
@@ -44,7 +44,7 @@ describe("Register Use Case", () => {
 				email: email,
 				password: "@123456",
 			}),
-		).rejects.toBeInstanceOf(UserAlreadyExistsError);
+		).rejects.toBeInstanceOf(ResourceAlreadyExistsError);
 	});
 
 	it("should be able to register", async () => {
