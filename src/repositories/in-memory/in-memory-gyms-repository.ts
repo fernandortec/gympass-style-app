@@ -1,7 +1,7 @@
+import { randomUUID } from "node:crypto";
 import type { GymsRepository } from "@/repositories/gyms-repository";
 import type { Gym, Prisma } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
-import { randomUUID } from "node:crypto";
 
 export class InMemoryGymsRepository implements GymsRepository {
 	public items: Gym[] = [];
@@ -19,6 +19,12 @@ export class InMemoryGymsRepository implements GymsRepository {
 		this.items.push(gym);
 
 		return gym;
+	}
+
+	async searchMany(query: string, page: number): Promise<Gym[]> {
+		return this.items
+			.filter((item) => item.title.includes(query))
+			.slice((page - 1) * 20, page * 20);
 	}
 
 	async findById(id: string): Promise<Gym | null> {
