@@ -29,6 +29,7 @@
 		"vitest": "^1.4.0"
 	},
 	"dependencies": {
+		"@fastify/jwt": "^8.0.0",
 		"@fastify/type-provider-typebox": "^4.0.0",
 		"@prisma/client": "^5.12.0",
 		"bcrypt-ts": "^5.0.2",

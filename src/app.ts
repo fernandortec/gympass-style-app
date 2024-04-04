@@ -1,32 +1,20 @@
 import { env } from "@/env";
+import { errorHandler } from "@/error-handler";
 import { appRoutes } from "@/http/routes";
+import fastifyJWT from "@fastify/jwt";
 import fastify from "fastify";
 import {
 	serializerCompiler,
 	validatorCompiler,
 } from "fastify-type-provider-zod";
 
-import { ZodError } from "zod";
-
-export const app = fastify();
+export const app = fastify()
 
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
+app.register(fastifyJWT, {
+	secret: env.JWT_SECRET,
+});
+app.setErrorHandler(errorHandler);
 
 app.register(appRoutes);
-
-app.setErrorHandler((error, _request, reply) => {
-	if (error instanceof ZodError) {
-		return reply
-			.status(400)
-			.send({ message: "Validation error.", issues: error.format() });
-	}
-
-	if (env.NODE_ENV !== "production") {
-		console.error(error);
-	} else {
-		//TODO Here we should log to an external tool like DataDog or Sentry
-	}
-
-	return reply.status(500).send({ message: "Internal server error." });
-});

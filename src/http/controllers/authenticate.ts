@@ -1,8 +1,10 @@
+import { verifyJWT } from "@/http/middlewares/verify-jwt";
 import { InvalidCredentialsError } from "@/use-cases/errors/invalid-credentials-error";
 import { makeAuthenticateUseCase } from "@/use-cases/factories/make-authenticate-use-case";
-import type { FastifyInstance, FastifyReply } from "fastify";
 
+import type { FastifyInstance } from "fastify";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
+
 import { z } from "zod";
 
 export async function authenticate(app: FastifyInstance): Promise<void> {
@@ -14,15 +16,34 @@ export async function authenticate(app: FastifyInstance): Promise<void> {
 					email: z.string().email(),
 					password: z.string().min(6),
 				}),
+				response: {
+					200: z.object({
+						token: z.string(),
+					}),
+					400: z.object({
+						message: z.string(),
+					}),
+				},
 			},
 		},
-		async (request, reply): Promise<FastifyReply> => {
+		async (request, reply) => {
 			const { email, password } = request.body;
 
 			try {
 				const authenticateUseCase = makeAuthenticateUseCase();
 
-				await authenticateUseCase.execute({ email, password });
+				const { user } = await authenticateUseCase.execute({ email, password });
+
+				const token = await reply.jwtSign(
+					{},
+					{
+						sign: {
+							sub: user.id,
+						},
+					},
+				);
+
+				return reply.status(200).send({ token: token });
 			} catch (error) {
 				if (error instanceof InvalidCredentialsError) {
 					return reply.status(400).send({ message: error.message });
@@ -30,8 +51,6 @@ export async function authenticate(app: FastifyInstance): Promise<void> {
 
 				throw error;
 			}
-
-			return reply.status(200).send();
 		},
 	);
 }
