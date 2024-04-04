@@ -1,11 +1,20 @@
 import { env } from "@/env";
 import { appRoutes } from "@/http/routes";
 import fastify from "fastify";
+import {
+	serializerCompiler,
+	validatorCompiler,
+} from "fastify-type-provider-zod";
+
 import { ZodError } from "zod";
 
 export const app = fastify();
 
+app.setValidatorCompiler(validatorCompiler);
+app.setSerializerCompiler(serializerCompiler);
+
 app.register(appRoutes);
+
 app.setErrorHandler((error, _request, reply) => {
 	if (error instanceof ZodError) {
 		return reply
