@@ -5,7 +5,7 @@ import type {
 } from "@/repositories/gyms-repository";
 import type { Gym, Prisma } from "@prisma/client";
 
-export class PrismaGymsRepostory implements GymsRepository {
+export class PrismaGymsRepository implements GymsRepository {
 	async create(data: Prisma.GymCreateInput): Promise<Gym> {
 		const gym = await prisma.gym.create({ data });
 
