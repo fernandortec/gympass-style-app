@@ -3,7 +3,7 @@ import type { UsersRepository } from "@/repositories/users-repository";
 import type { Prisma, User } from "@prisma/client";
 
 export class PrismaUsersRepository implements UsersRepository {
-	async create(data: Prisma.UserCreateInput) {
+	async create(data: Prisma.UserCreateInput): Promise<User> {
 		const user = await prisma.user.create({
 			data,
 		});
