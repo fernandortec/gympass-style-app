@@ -1,8 +1,12 @@
-import tsConfigPaths from "vite-tsconfig-paths";
+import path from "node:path";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-	plugins: [tsConfigPaths()],
+	resolve: {
+		alias: {
+			"@": path.resolve(__dirname, "./src"),
+		},
+	},
 	test: {
 		environmentMatchGlobs: [["src/http/controllers/**", "prisma"]],
 		dir: "src",

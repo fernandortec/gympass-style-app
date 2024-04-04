@@ -13,6 +13,7 @@
 		"test:coverage": "vitest run --coverage",
 		"test:ui": "vitest --ui",
 		"test:e2e": "vitest run --dir src/http",
+		"test:e2e:watch": "vitest --dir src/http",
 		"pretest:e2e": "pnpm link ./prisma/vitest-environment-prisma"
 	},
 	"keywords": [],
@@ -21,18 +22,18 @@
 	"devDependencies": {
 		"@biomejs/biome": "1.6.0",
 		"@types/node": "^20.12.4",
+		"@types/supertest": "^6.0.2",
 		"@vitest/coverage-v8": "^1.4.0",
 		"@vitest/ui": "^1.4.0",
 		"prisma": "^5.12.1",
+		"supertest": "^6.3.4",
 		"tsup": "^8.0.2",
 		"tsx": "^4.7.1",
 		"typescript": "^5.4.3",
-		"vite-tsconfig-paths": "^4.3.2",
 		"vitest": "^1.4.0"
 	},
 	"dependencies": {
 		"@fastify/jwt": "^8.0.0",
-		"@fastify/type-provider-typebox": "^4.0.0",
 		"@prisma/client": "^5.12.1",
 		"bcrypt-ts": "^5.0.2",
 		"dayjs": "^1.11.10",
