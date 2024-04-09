@@ -14,7 +14,7 @@ describe("Create check-in (e2e)", () => {
 	});
 
 	it("should be able to create a check-in", async () => {
-		const { token } = await createAndAuthenticateUser(app);
+		const { token } = await createAndAuthenticateUser(app, true);
 
 		const gym = await prisma.gym.create({
 			data: {
@@ -34,6 +34,6 @@ describe("Create check-in (e2e)", () => {
 				longitude: -43.9699836,
 			});
 
-    expect(response.statusCode).toBe(201)
+		expect(response.statusCode).toBe(201);
 	});
 });

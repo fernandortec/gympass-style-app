@@ -14,7 +14,5 @@ export function verifyUserRole(roleToVerify: "ADMIN" | "MEMBER"): VerifyReturn {
 
 		if (role !== roleToVerify)
 			return reply.status(401).send({ message: "Unauthorized" });
-
-		return;
 	};
 }
