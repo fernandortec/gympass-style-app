@@ -45,7 +45,7 @@ export async function authenticate(app: FastifyInstance): Promise<void> {
 					},
 				);
 				const refreshToken = await reply.jwtSign(
-					{},
+					{ role: user.role },
 					{
 						sign: {
 							sub: user.id,

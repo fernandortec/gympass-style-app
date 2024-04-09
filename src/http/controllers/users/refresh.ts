@@ -6,8 +6,10 @@ export async function refresh(app: FastifyInstance): Promise<void> {
 
 		const userId = request.user.sub;
 
+		const { role } = request.user;
+
 		const token = await reply.jwtSign(
-			{},
+			{ role },
 			{
 				sign: {
 					sub: userId,
@@ -15,7 +17,7 @@ export async function refresh(app: FastifyInstance): Promise<void> {
 			},
 		);
 		const refreshToken = await reply.jwtSign(
-			{},
+			{ role },
 			{
 				sign: {
 					sub: userId,
