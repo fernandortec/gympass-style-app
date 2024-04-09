@@ -10,7 +10,7 @@ export async function metrics(app: FastifyInstance): Promise<void> {
 
 			const getUserMetricsUseCase = makeGetUserMetricsUseCase();
 
-			const checkInsCount = await getUserMetricsUseCase.execute({
+			const { checkInsCount } = await getUserMetricsUseCase.execute({
 				userId,
 			});
 

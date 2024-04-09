@@ -21,7 +21,7 @@ export async function history(app: FastifyInstance): Promise<void> {
 			const findUserCheckInsHistoryUseCase =
 				makeFindUserCheckInsHistoryuseCase();
 
-			const checkIns = await findUserCheckInsHistoryUseCase.execute({
+			const { checkIns } = await findUserCheckInsHistoryUseCase.execute({
 				page,
 				userId,
 			});
