@@ -20,7 +20,7 @@ export async function search(app: FastifyInstance): Promise<void> {
 
 			const searchGymsUseCase = makeSearchGymsUseCase();
 
-			const gyms = await searchGymsUseCase.execute({
+			const { gyms } = await searchGymsUseCase.execute({
 				page,
 				query: q,
 			});
