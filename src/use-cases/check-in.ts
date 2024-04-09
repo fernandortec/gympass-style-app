@@ -17,7 +17,7 @@ type CheckInUseCaseResponse = {
 	checkIn: CheckIn;
 };
 
-export class CheckInUseCase {
+export class CreateCheckInUseCase {
 	constructor(
 		private checkInsRepository: CheckInsRepository,
 		private gymsRepository: GymsRepository,

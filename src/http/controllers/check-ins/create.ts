@@ -1,34 +1,34 @@
 import type { FastifyInstance, FastifyReply } from "fastify";
 
-import { makeCreateGymUseCase } from "@/use-cases/factories/make-create-gym-use-case";
+import { makeCreateCheckInUseCase } from "@/use-cases/factories/make-create-check-in-use-case";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
 import { z } from "zod";
 
 export async function create(app: FastifyInstance): Promise<void> {
 	app.withTypeProvider<ZodTypeProvider>().post(
-		"/users",
+		"/gyms/:gymId/check-ins",
 		{
 			schema: {
 				body: z.object({
-					title: z.string(),
-					description: z.string().nullable(),
-					phone: z.string().nullable(),
-					latitude: z.number().refine((value) => Math.abs(value) <= 90),
-					longitude: z.number().refine((value) => Math.abs(value) <= 180),
+					userLatitude: z.number().refine((value) => Math.abs(value) <= 90),
+					userLongitude: z.number().refine((value) => Math.abs(value) <= 180),
 				}),
+				params: z.object({ gymId: z.string().uuid() }),
 			},
 		},
 		async (request, reply): Promise<FastifyReply> => {
-			const { description, latitude, longitude, phone, title } = request.body;
+			const { gymId } = request.params;
+			const { userLatitude, userLongitude } = request.body;
 
-			const createGymUseCase = makeCreateGymUseCase();
+			const userId = request.user.sub;
 
-			await createGymUseCase.execute({
-				description,
-				latitude,
-				longitude,
-				phone,
-				title,
+			const createCheckInUseCase = makeCreateCheckInUseCase();
+
+			await createCheckInUseCase.execute({
+				gymId,
+				userId,
+				userLatitude,
+				userLongitude,
 			});
 
 			return reply.status(201).send();
