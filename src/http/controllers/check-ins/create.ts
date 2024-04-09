@@ -10,15 +10,15 @@ export async function create(app: FastifyInstance): Promise<void> {
 		{
 			schema: {
 				body: z.object({
-					userLatitude: z.number().refine((value) => Math.abs(value) <= 90),
-					userLongitude: z.number().refine((value) => Math.abs(value) <= 180),
+					latitude: z.number().refine((value) => Math.abs(value) <= 90),
+					longitude: z.number().refine((value) => Math.abs(value) <= 180),
 				}),
 				params: z.object({ gymId: z.string().uuid() }),
 			},
 		},
 		async (request, reply): Promise<FastifyReply> => {
 			const { gymId } = request.params;
-			const { userLatitude, userLongitude } = request.body;
+			const { latitude, longitude } = request.body;
 
 			const userId = request.user.sub;
 
@@ -27,8 +27,8 @@ export async function create(app: FastifyInstance): Promise<void> {
 			await createCheckInUseCase.execute({
 				gymId,
 				userId,
-				userLatitude,
-				userLongitude,
+				userLatitude: latitude,
+				userLongitude: longitude,
 			});
 
 			return reply.status(201).send();
