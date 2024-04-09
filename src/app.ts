@@ -1,6 +1,7 @@
 import { env } from "@/env";
 import { errorHandler } from "@/error-handler";
-import { appRoutes } from "@/http/routes";
+import { gymsRoutes } from "@/http/controllers/gyms/routes";
+import { usersRoutes } from "@/http/controllers/users/routes";
 import fastifyJWT from "@fastify/jwt";
 import fastify from "fastify";
 import {
@@ -17,4 +18,5 @@ app.register(fastifyJWT, {
 });
 app.setErrorHandler(errorHandler);
 
-app.register(appRoutes);
+app.register(usersRoutes);
+app.register(gymsRoutes); 
